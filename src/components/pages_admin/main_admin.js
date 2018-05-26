@@ -1,18 +1,89 @@
 import React, { Component } from 'react';
+import { Image } from 'react-bootstrap';
 import InputBootstrap from '../input_bootstrap';
+import ButtonBootstrap from '../button_bootstrap';
+import InputFile from '../input_file';
+import { connect } from 'react-redux';
 
 class MainAdmin extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            code: 0,
+            errorMessageCreate: null,
+            srcImageCreate: null
+        }
+    }
+
     showInputs = () => {
         const inputs = [
-            {key: 'etInpUser', comClass: 'input', type: 'file', label: 'Imagen', required: true, name: "image"},
-            {key: 'etInpPass', comClass: 'input', type: 'text', label: 'Nombre', required: true, name: 'name'},
-            {key: 'etInpPass', comClass: 'textarea', type: 'text', label: 'Descripción', required: true, name: 'description'},
-            {key: 'etInpPass', comClass: 'input', type: 'number', label: 'Duración', required: true, name: 'duration'},
-            {key: 'etInpPass', comClass: 'input', type: 'number', label: 'Edad mínima', required: true, name: 'minage'}
+            {key: 'etInpName', comClass: 'input', type: 'text', label: 'Nombre', required: true, name: 'name'},
+            {key: 'etInpDuration', comClass: 'input', type: 'number', label: 'Duración', required: true, name: 'duration'},
+            {key: 'etInpMinAge', comClass: 'input', type: 'number', label: 'Edad mínima', required: true, name: 'minage'},
+            {key: 'etInpDescription', comClass: 'textarea', type: 'text', label: 'Descripción', required: true, name: 'description'},
         ]
 
         return inputs.map(input => <InputBootstrap key={input.key} componentClass={input.comClass} 
             type={input.type} label={input.label} required={input.required} name={input.name} />);
+    }
+
+    selectImage = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+        reader.onloadend = e => {
+            this.setState({
+                srcImageCreate: reader.result
+            });
+        };
+    }
+
+    createFilm = e => {
+        e.preventDefault();
+        const form = e.target;
+        const file  = {
+            'type': form.image.files[0].type,
+            'tmp_name': this.state.srcImageCreate
+         };  
+        fetch(`http://localhost:8000/admin/film/create`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': this.props.token
+            },
+            body: JSON.stringify({
+                files: {
+                    image: file
+                },
+                request: {
+                    name: form.name.value,
+                    duration: form.duration.value,
+                    minage: form.minage.value,
+                    description: form.description.value
+                }
+            })
+        })
+        .then(response => {
+            this.setState({code: response.status});
+
+            return response.json();
+        })
+        .then(jsonResponse => {
+            if (201 === this.state.code) {
+                form.reset();
+                this.setState({
+                    srcImageCreate: null,
+                    errorMessageCreate: null
+                });
+            } else {
+                this.setState({
+                    errorMessageCreate: jsonResponse
+                });
+            }
+        });
     }
 
     render() {
@@ -21,14 +92,18 @@ class MainAdmin extends Component {
                 <div className="container">
                     <div className="col-md-8 float-left">
                         <div className="background-white padding-25">
-                            <h3>Películas</h3>
+                            <h5>Películas</h5>
                         </div>
                     </div>
                     <div className="col-md-4 float-left">
                         <div className="background-white padding-25">
-                            <h3>Crear película</h3>
-                            <form>
+                            <h5>Crear película</h5>
+                            <form onSubmit={this.createFilm}>
+                                <Image src={this.state.srcImageCreate} className="margin-top-bottom max-height-150" responsive />
+                                <InputFile text="Elegir imagen" class="btn btn-outline-secondary" name="image" selectImage={this.selectImage} />
                                 {this.showInputs()}
+                                {null !== this.state.errorMessageCreate ? <label className="text-danger">{this.state.errorMessageCreate}</label>: ''}
+                                <ButtonBootstrap btnStyle="primary" block={true} type="submit" text="Crear película" />
                             </form>
                         </div>
                     </div>
@@ -38,4 +113,12 @@ class MainAdmin extends Component {
     }
 }
 
-export default MainAdmin;
+const mapStateToProps = state => {
+    console.log(state);
+    return {
+        token: state.token,
+        hasRedirect: state.hasRedirect
+    }
+}
+
+export default connect(mapStateToProps)(MainAdmin);

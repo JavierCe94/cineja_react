@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
+import { Navbar } from 'react-bootstrap';
 
 class Header extends Component {
     render() {
         return (
-            <header className="header">
-                <div className="container">
-                    <h1>Cineja</h1>
-                </div>
-            </header>
+            <Navbar>
+                <Navbar.Header>
+                    <Navbar.Brand>
+                    <a href="">Cineja</a>
+                    </Navbar.Brand>
+                </Navbar.Header>
+            </Navbar>
         );
     }
 }

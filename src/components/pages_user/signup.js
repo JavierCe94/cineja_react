@@ -52,6 +52,7 @@ class Signup extends Component {
         })
         .then(response => {
             if (201 === response.status) {
+                form.reset();
                 this.setState({
                     infoIsTypeError: false
                 });

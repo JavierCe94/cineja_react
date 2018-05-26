@@ -5,10 +5,16 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import TodoApp from './todo_app';
 
+const store = createStore(TodoApp, {})
 ReactDOM.render(
-    <Router>
-        <App />
-    </Router>,
+    <Provider store={store}>
+        <Router>
+            <App />
+        </Router>
+    </Provider>,
     document.getElementById('root'));
 registerServiceWorker();

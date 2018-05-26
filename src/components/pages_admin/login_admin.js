@@ -2,14 +2,24 @@ import React, { Component } from 'react';
 import InputBootstrap from '../input_bootstrap';
 import ButtonBootstrap from '../button_bootstrap';
 import  { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class LoginAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            hasRedirect: false,
+            code: 0,
             errorMessage: ''
-        }
+        };
+        this.onLoginIn = this.onLoginIn.bind(this);
+    }
+
+    onLoginIn = (token) => {
+        this.props.dispatch({
+            type: 'LOGIN',
+            token: token,
+            hasRedirect: true
+        });
     }
 
     showInputs = () => {
@@ -38,22 +48,19 @@ class LoginAdmin extends Component {
             })
         })
         .then(response => {
-            if (200 === response.status) {
-                document.cookie = `token=${response.json()}`;
-                return null;
-            }
+            this.setState({
+                code: response.status
+            });
             
             return response.json();
         })
         .then(jsonResponse => {
-            if (null !== jsonResponse) {
+            if (200 !== this.state.code) {
                 this.setState({
                     errorMessage: jsonResponse
                 });
             } else {
-                this.setState({
-                    hasRedirect: true
-                });
+                this.onLoginIn(jsonResponse);
             }
         });
     }
@@ -65,7 +72,7 @@ class LoginAdmin extends Component {
                     <div className="col-md-4 center-block">
                         <form className="background-white padding-25" onSubmit={this.checkLoginAdmin}>
                             {this.showInputs()}
-                            {this.state.hasRedirect ? <Redirect to="/admin/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
+                            {this.props.hasRedirect ? <Redirect to="/admin/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
                             <ButtonBootstrap btnStyle="primary" size="large" block={true} type="submit" text="Iniciar sesión" />
                         </form>
                     </div>
@@ -75,4 +82,12 @@ class LoginAdmin extends Component {
     }
 }
 
-export default LoginAdmin;
+const mapStateToProps = state => {
+    console.log(state);
+    return {
+        token: state.token,
+        hasRedirect: state.hasRedirect
+    }
+}
+
+export default connect(mapStateToProps)(LoginAdmin);
