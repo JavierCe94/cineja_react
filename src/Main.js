@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import User from './components/pages_user/user';
-import Admin from './components/pages_admin/admin';
+import User from './components/pagesUser/user';
+import Admin from './components/pagesAdmin/admin';
 
 const Main = () => {
     return (

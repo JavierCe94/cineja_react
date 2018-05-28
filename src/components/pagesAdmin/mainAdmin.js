@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Image } from 'react-bootstrap';
-import InputBootstrap from '../input_bootstrap';
-import ButtonBootstrap from '../button_bootstrap';
-import InputFile from '../input_file';
+import InputBootstrap from '../inputBootstrap';
+import ButtonBootstrap from '../buttonBootstrap';
 import { connect } from 'react-redux';
+import InputFileDragDrop from '../inputFileDragDrop';
 
 class MainAdmin extends Component {
     constructor(props) {
@@ -28,7 +27,7 @@ class MainAdmin extends Component {
     }
 
     selectImage = e => {
-        const file = e.target.files[0];
+        /*const file = e.target.files[0];
         const reader = new FileReader();
         if (file) {
             reader.readAsDataURL(file);
@@ -37,7 +36,7 @@ class MainAdmin extends Component {
             this.setState({
                 srcImageCreate: reader.result
             });
-        };
+        };*/
     }
 
     createFilm = e => {
@@ -99,8 +98,8 @@ class MainAdmin extends Component {
                         <div className="background-white padding-25">
                             <h5>Crear película</h5>
                             <form onSubmit={this.createFilm}>
-                                <Image src={this.state.srcImageCreate} className="margin-top-bottom max-height-150" responsive />
-                                <InputFile text="Elegir imagen" class="btn btn-outline-secondary" name="image" selectImage={this.selectImage} />
+                                <InputFileDragDrop text="Elegir imágen" name="image" onDrop={this.selectImage} extensions={['.jpg', '.jpeg', '.png']} 
+                                    fileSize={5242880} preview={true} />
                                 {this.showInputs()}
                                 {null !== this.state.errorMessageCreate ? <label className="text-danger">{this.state.errorMessageCreate}</label>: ''}
                                 <ButtonBootstrap btnStyle="primary" block={true} type="submit" text="Crear película" />

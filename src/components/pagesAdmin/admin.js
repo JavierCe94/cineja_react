@@ -2,8 +2,8 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Header from '../header';
 import Footer from '../footer';
-import LoginAdmin from './login_admin';
-import MainAdmin from './main_admin';
+import LoginAdmin from './loginAdmin';
+import MainAdmin from './mainAdmin';
 
 const Admin = props => {
     return (

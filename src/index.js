@@ -7,9 +7,17 @@ import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import TodoApp from './todo_app';
+import TodoApp from './todoApp';
+import { loadState, saveState } from './localStorage';
 
-const store = createStore(TodoApp, {})
+const persistedState = loadState();
+const store = createStore(
+    TodoApp,
+    persistedState
+);
+store.subscribe(() => {
+    saveState(store.getState());
+});
 ReactDOM.render(
     <Provider store={store}>
         <Router>

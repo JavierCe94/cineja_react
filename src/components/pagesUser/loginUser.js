@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import InputBootstrap from '../input_bootstrap';
-import ButtonBootstrap from '../button_bootstrap';
+import InputBootstrap from '../inputBootstrap';
+import ButtonBootstrap from '../buttonBootstrap';
 import { Link, Redirect } from 'react-router-dom';
 
 class LoginUser extends Component {

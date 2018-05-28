@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import InputBootstrap from '../input_bootstrap';
-import ButtonBootstrap from '../button_bootstrap';
+import InputBootstrap from '../inputBootstrap';
+import ButtonBootstrap from '../buttonBootstrap';
 
 class Signup extends Component {
     constructor(props) {
