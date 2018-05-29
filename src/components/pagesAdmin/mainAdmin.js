@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import InputBootstrap from '../inputBootstrap';
 import ButtonBootstrap from '../buttonBootstrap';
 import { connect } from 'react-redux';
-import InputFileDragDrop from '../inputFileDragDrop';
+import InputFilePreview from '../inputFilePreview';
+import Film from './film';
 
 class MainAdmin extends Component {
     constructor(props) {
@@ -10,8 +11,41 @@ class MainAdmin extends Component {
         this.state = {
             code: 0,
             errorMessageCreate: null,
-            srcImageCreate: null
+            srcImageCreate: null,
+            imageVisible: false,
+            listFilms: [{}]
         }
+    }
+
+    componentWillMount = () => {
+        this.showFilms();
+    }
+
+    showFilms = () => {
+        fetch(`http://localhost:8000/admin/film/showfilms`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'X-AUTH-TOKEN': this.props.token
+            }
+        })
+        .then(response => {
+            if (401 === response.status) {
+                localStorage.clear();
+            }
+            this.setState({code: response.status});
+
+            return response.json();
+        })
+        .then(jsonResponse => {
+            if (200 === this.state.code) {
+                this.setState({
+                    listFilms: jsonResponse
+                });
+            } else {
+                console.log(jsonResponse);
+            }
+        });
     }
 
     showInputs = () => {
@@ -27,16 +61,17 @@ class MainAdmin extends Component {
     }
 
     selectImage = e => {
-        /*const file = e.target.files[0];
+        const file = e.target.files[0];
         const reader = new FileReader();
         if (file) {
             reader.readAsDataURL(file);
         }
         reader.onloadend = e => {
             this.setState({
-                srcImageCreate: reader.result
+                srcImageCreate: reader.result,
+                imageVisible: true
             });
-        };*/
+        };
     }
 
     createFilm = e => {
@@ -66,6 +101,9 @@ class MainAdmin extends Component {
             })
         })
         .then(response => {
+            if (401 === response.status) {
+                localStorage.clear();
+            }
             this.setState({code: response.status});
 
             return response.json();
@@ -75,8 +113,10 @@ class MainAdmin extends Component {
                 form.reset();
                 this.setState({
                     srcImageCreate: null,
-                    errorMessageCreate: null
+                    errorMessageCreate: null,
+                    imageVisible: false
                 });
+                this.showFilms();
             } else {
                 this.setState({
                     errorMessageCreate: jsonResponse
@@ -92,14 +132,20 @@ class MainAdmin extends Component {
                     <div className="col-md-8 float-left">
                         <div className="background-white padding-25">
                             <h5>Películas</h5>
+                            <div>
+                                {this.state.listFilms.map((film) => {
+                                    return <Film key={`film${film.id}`} image={`http://localhost:8000/uploads/films/${film.image}`} name={film.name} description={film.description} genres={film.filmGenres} />;
+                                })}
+                            </div>
                         </div>
                     </div>
                     <div className="col-md-4 float-left">
                         <div className="background-white padding-25">
                             <h5>Crear película</h5>
                             <form onSubmit={this.createFilm}>
-                                <InputFileDragDrop text="Elegir imágen" name="image" onDrop={this.selectImage} extensions={['.jpg', '.jpeg', '.png']} 
-                                    fileSize={5242880} preview={true} />
+                                <InputFilePreview src={this.state.srcImageCreate} onChange={this.selectImage} 
+                                    divClass="horizontal-align-center padding-25 border-shadow-lf" previewClass="max-height-100 margin-bottom-15"
+                                    inputClass="btn btn-info margin-0" displayImage={this.state.imageVisible} />
                                 {this.showInputs()}
                                 {null !== this.state.errorMessageCreate ? <label className="text-danger">{this.state.errorMessageCreate}</label>: ''}
                                 <ButtonBootstrap btnStyle="primary" block={true} type="submit" text="Crear película" />
@@ -113,7 +159,6 @@ class MainAdmin extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
         token: state.token,
         hasRedirect: state.hasRedirect

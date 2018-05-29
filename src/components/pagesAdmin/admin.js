@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Header from '../header';
 import Footer from '../footer';
 import LoginAdmin from './loginAdmin';
@@ -11,9 +12,17 @@ const Admin = props => {
             <Header />
                 <Route exact path="/admin" component={LoginAdmin} />
                 <Route exact path="/admin/main" component={MainAdmin} />
+                {false === props.hasRedirect && '/admin' !== props.location.pathname ? <Redirect to="/admin" /> : null}
             <Footer />
         </main>
     );
 }
 
-export default Admin;
+const mapStateToProps = state => {
+    return {
+        token: state.token,
+        hasRedirect: state.hasRedirect
+    }
+}
+
+export default connect(mapStateToProps)(Admin);

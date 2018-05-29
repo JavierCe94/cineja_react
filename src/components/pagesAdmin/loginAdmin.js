@@ -83,7 +83,6 @@ class LoginAdmin extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
         token: state.token,
         hasRedirect: state.hasRedirect

@@ -1,12 +1,17 @@
 export const loadState = () => {
+    const stateDefault = {
+        hasRedirect: false,
+        token: ''
+    };
+
     try {
         const serializedState = localStorage.getItem('state');
         if (null === serializedState) {
-            return {};
+            return stateDefault;
         }
         return JSON.parse(serializedState);
     } catch (error) {
-        return {};
+        return stateDefault;
     }
 };
 
