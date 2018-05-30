@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Clearfix } from 'react-bootstrap';
+import ButtonBootstrap from '../buttonBootstrap';
 
 const Film = props => {
     return (
@@ -11,6 +12,8 @@ const Film = props => {
                 <span className="bold-font-size-1 ">{props.name}</span>
                 <Clearfix />
                 <span className="font-size-0-85">{props.description}</span>
+                <Clearfix />
+                <ButtonBootstrap btnStyle="secondary" text="Nueva hora" type="button" />
             </div>
             <Clearfix />
         </div>

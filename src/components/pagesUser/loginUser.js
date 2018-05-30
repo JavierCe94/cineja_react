@@ -60,16 +60,14 @@ class LoginUser extends Component {
 
     render() {
         return (
-            <div className="background-light-grey">
-                <div className="container">
-                    <div className="col-md-4 center-block">
-                        <form className="background-white padding-25" onSubmit={this.checkLoginUser}>
-                            {this.showInputs()}
-                            {this.state.hasRedirect ? <Redirect to="/user/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
-                            <ButtonBootstrap btnStyle="primary" size="large" block={true} type="submit" text="Iniciar sesión" />
-                        </form>
-                        <span className="text-muted">Si no tienes una cuenta, </span><Link to="/user/signup">Regístrate</Link>
-                    </div>
+            <div className="container">
+                <div className="col-md-4 center-block">
+                    <form className="background-white padding-25" onSubmit={this.checkLoginUser}>
+                        {this.showInputs()}
+                        {this.state.hasRedirect ? <Redirect to="/user/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
+                        <ButtonBootstrap btnStyle="primary" size="large" block={true} type="submit" text="Iniciar sesión" />
+                    </form>
+                    <span className="text-muted">Si no tienes una cuenta, </span><Link to="/user/signup">Regístrate</Link>
                 </div>
             </div>
         );

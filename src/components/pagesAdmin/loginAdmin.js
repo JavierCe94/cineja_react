@@ -67,15 +67,13 @@ class LoginAdmin extends Component {
 
     render() {
         return (
-            <div className="background-light-grey">
-                <div className="container">
-                    <div className="col-md-4 center-block">
-                        <form className="background-white padding-25" onSubmit={this.checkLoginAdmin}>
-                            {this.showInputs()}
-                            {this.props.hasRedirect ? <Redirect to="/admin/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
-                            <ButtonBootstrap btnStyle="primary" size="large" block={true} type="submit" text="Iniciar sesión" />
-                        </form>
-                    </div>
+            <div className="container">
+                <div className="col-md-4 center-block">
+                    <form className="background-white padding-25" onSubmit={this.checkLoginAdmin}>
+                        {this.showInputs()}
+                        {this.props.hasRedirect ? <Redirect to="/admin/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
+                        <ButtonBootstrap btnStyle="primary" size="large" block={true} type="submit" text="Iniciar sesión" />
+                    </form>
                 </div>
             </div>
         );

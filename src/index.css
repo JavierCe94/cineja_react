@@ -6,7 +6,7 @@ body {
 
 .background-light-grey {
   background-color: #ebeced;
-  height: calc(100vh - 112px);
+  min-height: calc(100vh - 112px);
   padding: 15px 15px;
 }
 
@@ -50,11 +50,7 @@ body {
   width: 100%;
 }
 
-.border-shadow-lf {
-  box-shadow: 0.5px 0.5px #eee, 0.5px -0.3px #eee, -0.3px 0 #eee;
-}
-
-.border-5-grey {
+.border-2 {
   border-radius: 2pt;
 }
 
@@ -99,6 +95,10 @@ body {
 
 .margin-bottom-15 {
   margin-bottom: 15px;
+}
+
+.margin-bottom-25 {
+  margin-bottom: 25px;
 }
 
 .padding-bottom-15 {

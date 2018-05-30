@@ -69,16 +69,14 @@ class Signup extends Component {
 
     render() {
         return (
-            <div className="background-light-grey">
-                <div className="container">
-                    <div className="col-md-4 center-block">
-                        <form className="background-white padding-25" onSubmit={this.createUser}>
-                            {this.showInputs()}
-                            <label className={this.state.infoIsTypeError ? 'text-danger' : 'text-success'}>{this.state.infoMessage}</label>
-                            <ButtonBootstrap btnStyle="primary" size="large" block={true} type="submit" text="Registrar" />
-                        </form>
-                        <span className="text-muted">Si ya tienes una cuenta, </span><Link to="/user">Inicia sesión</Link>
-                    </div>
+            <div className="container">
+                <div className="col-md-4 center-block">
+                    <form className="background-white padding-25" onSubmit={this.createUser}>
+                        {this.showInputs()}
+                        <label className={this.state.infoIsTypeError ? 'text-danger' : 'text-success'}>{this.state.infoMessage}</label>
+                        <ButtonBootstrap btnStyle="primary" size="large" block={true} type="submit" text="Registrar" />
+                    </form>
+                    <span className="text-muted">Si ya tienes una cuenta, </span><Link to="/user">Inicia sesión</Link>
                 </div>
             </div>
         );

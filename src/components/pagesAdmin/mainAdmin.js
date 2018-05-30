@@ -4,6 +4,7 @@ import ButtonBootstrap from '../buttonBootstrap';
 import { connect } from 'react-redux';
 import InputFilePreview from '../inputFilePreview';
 import Film from './film';
+import upload from '../../upload.png';
 
 class MainAdmin extends Component {
     constructor(props) {
@@ -11,9 +12,8 @@ class MainAdmin extends Component {
         this.state = {
             code: 0,
             errorMessageCreate: null,
-            srcImageCreate: null,
-            imageVisible: false,
-            listFilms: [{}]
+            srcImageCreate: upload,
+            listFilms: []
         }
     }
 
@@ -22,7 +22,7 @@ class MainAdmin extends Component {
     }
 
     showFilms = () => {
-        fetch(`http://localhost:8000/admin/film/showfilms`, {
+        fetch(`http://localhost:8000/admin/film/showfilmsrooms`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -42,8 +42,6 @@ class MainAdmin extends Component {
                 this.setState({
                     listFilms: jsonResponse
                 });
-            } else {
-                console.log(jsonResponse);
             }
         });
     }
@@ -68,8 +66,7 @@ class MainAdmin extends Component {
         }
         reader.onloadend = e => {
             this.setState({
-                srcImageCreate: reader.result,
-                imageVisible: true
+                srcImageCreate: reader.result
             });
         };
     }
@@ -112,9 +109,8 @@ class MainAdmin extends Component {
             if (201 === this.state.code) {
                 form.reset();
                 this.setState({
-                    srcImageCreate: null,
-                    errorMessageCreate: null,
-                    imageVisible: false
+                    srcImageCreate: upload,
+                    errorMessageCreate: null
                 });
                 this.showFilms();
             } else {
@@ -127,30 +123,38 @@ class MainAdmin extends Component {
 
     render() {
         return (
-            <div className="background-light-grey">
-                <div className="container">
-                    <div className="col-md-8 float-left">
+            <div className="container">
+                <div className="col-md-8 float-left">
+                    <div className="width-100 float-left margin-bottom-15">
+                        <div className="background-white padding-25">
+                            <h5>Filtro</h5>
+                            <div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div className="width-100 float-left">
                         <div className="background-white padding-25">
                             <h5>Películas</h5>
                             <div>
                                 {this.state.listFilms.map((film) => {
-                                    return <Film key={`film${film.id}`} image={`http://localhost:8000/uploads/films/${film.image}`} name={film.name} description={film.description} genres={film.filmGenres} />;
+                                    return <Film key={`film${film.id}`} image={`http://localhost:8000/uploads/films/${film.image}`} 
+                                        name={film.name} description={film.description} genres={film.filmGenres} />;
                                 })}
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-4 float-left">
-                        <div className="background-white padding-25">
-                            <h5>Crear película</h5>
-                            <form onSubmit={this.createFilm}>
-                                <InputFilePreview src={this.state.srcImageCreate} onChange={this.selectImage} 
-                                    divClass="horizontal-align-center padding-25 border-shadow-lf" previewClass="max-height-100 margin-bottom-15"
-                                    inputClass="btn btn-info margin-0" displayImage={this.state.imageVisible} />
-                                {this.showInputs()}
-                                {null !== this.state.errorMessageCreate ? <label className="text-danger">{this.state.errorMessageCreate}</label>: ''}
-                                <ButtonBootstrap btnStyle="primary" block={true} type="submit" text="Crear película" />
-                            </form>
-                        </div>
+                </div>
+                <div className="col-md-4 float-left">
+                    <div className="background-white padding-25">
+                        <h5>Crear película</h5>
+                        <form onSubmit={this.createFilm}>
+                            <InputFilePreview src={this.state.srcImageCreate} onChange={this.selectImage} 
+                                divClass="horizontal-align-center padding-25" previewClass="max-height-100 margin-bottom-15" inputClass="btn btn-info margin-0" />
+                            {this.showInputs()}
+                            {null !== this.state.errorMessageCreate ? <label className="text-danger">{this.state.errorMessageCreate}</label>: ''}
+                            <ButtonBootstrap btnStyle="primary" block={true} type="submit" text="Crear película" />
+                        </form>
                     </div>
                 </div>
             </div>
