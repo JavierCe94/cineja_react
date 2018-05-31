@@ -26,7 +26,7 @@ class LoginAdmin extends Component {
         const inputs = [
             {key: 'etInpUser', type: 'text', label: 'Usuario', required: true, name: "username"},
             {key: 'etInpPass', type: 'password', label: 'Contraseña', required: true, name: 'password'}
-        ]
+        ];
 
         return inputs.map(input => <InputBootstrap key={input.key} type={input.type} label={input.label} required={input.required} name={input.name} />);
     }
@@ -72,7 +72,7 @@ class LoginAdmin extends Component {
                     <form className="background-white padding-25" onSubmit={this.checkLoginAdmin}>
                         {this.showInputs()}
                         {this.props.hasRedirect ? <Redirect to="/admin/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
-                        <ButtonBootstrap btnStyle="primary" size="large" block={true} type="submit" text="Iniciar sesión" />
+                        <ButtonBootstrap btnStyle="info" size="large" block={true} type="submit" text="Iniciar sesión" />
                     </form>
                 </div>
             </div>

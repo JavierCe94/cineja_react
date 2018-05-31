@@ -13,7 +13,8 @@ const Film = props => {
                 <Clearfix />
                 <span className="font-size-0-85">{props.description}</span>
                 <Clearfix />
-                <ButtonBootstrap btnStyle="secondary" text="Nueva hora" type="button" />
+                <ButtonBootstrap btnStyle="default" text="Nueva hora" type="button" className="margin-right-10" />
+                <ButtonBootstrap btnStyle="default" text="Nuevo género" type="button" />
             </div>
             <Clearfix />
         </div>

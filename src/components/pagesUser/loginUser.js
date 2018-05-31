@@ -2,14 +2,24 @@ import React, { Component } from 'react';
 import InputBootstrap from '../inputBootstrap';
 import ButtonBootstrap from '../buttonBootstrap';
 import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class LoginUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            hasRedirect: false,
+            code: 0,
             errorMessage: ''
         }
+        this.onLoginIn = this.onLoginIn.bind(this);
+    }
+
+    onLoginIn = (token) => {
+        this.props.dispatch({
+            type: 'LOGIN',
+            token: token,
+            hasRedirect: true
+        });
     }
 
     showInputs = () => {
@@ -38,22 +48,19 @@ class LoginUser extends Component {
             })
         })
         .then(response => {
-            if (200 === response.status) {
-                document.cookie = `token=${response.json()}`;
-                return null;
-            }
+            this.setState({
+                code: response.status
+            });
             
             return response.json();
         })
         .then(jsonResponse => {
-            if (null !== jsonResponse) {
+            if (200 !== this.state.code) {
                 this.setState({
                     errorMessage: jsonResponse
                 });
             } else {
-                this.setState({
-                    hasRedirect: true
-                });
+                this.onLoginIn(jsonResponse);
             }
         });
     }
@@ -64,8 +71,8 @@ class LoginUser extends Component {
                 <div className="col-md-4 center-block">
                     <form className="background-white padding-25" onSubmit={this.checkLoginUser}>
                         {this.showInputs()}
-                        {this.state.hasRedirect ? <Redirect to="/user/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
-                        <ButtonBootstrap btnStyle="primary" size="large" block={true} type="submit" text="Iniciar sesión" />
+                        {this.props.hasRedirect ? <Redirect to="/user/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
+                        <ButtonBootstrap btnStyle="info" size="large" block={true} type="submit" text="Iniciar sesión" />
                     </form>
                     <span className="text-muted">Si no tienes una cuenta, </span><Link to="/user/signup">Regístrate</Link>
                 </div>
@@ -74,4 +81,11 @@ class LoginUser extends Component {
     }
 }
 
-export default LoginUser;
+const mapStateToProps = state => {
+    return {
+        token: state.token,
+        hasRedirect: state.hasRedirect
+    }
+}
+
+export default connect(mapStateToProps)(LoginUser);

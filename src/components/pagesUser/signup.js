@@ -74,7 +74,7 @@ class Signup extends Component {
                     <form className="background-white padding-25" onSubmit={this.createUser}>
                         {this.showInputs()}
                         <label className={this.state.infoIsTypeError ? 'text-danger' : 'text-success'}>{this.state.infoMessage}</label>
-                        <ButtonBootstrap btnStyle="primary" size="large" block={true} type="submit" text="Registrar" />
+                        <ButtonBootstrap btnStyle="info" size="large" block={true} type="submit" text="Registrar" />
                     </form>
                     <span className="text-muted">Si ya tienes una cuenta, </span><Link to="/user">Inicia sesión</Link>
                 </div>

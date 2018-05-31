@@ -153,7 +153,7 @@ class MainAdmin extends Component {
                                 divClass="horizontal-align-center padding-25" previewClass="max-height-100 margin-bottom-15" inputClass="btn btn-info margin-0" />
                             {this.showInputs()}
                             {null !== this.state.errorMessageCreate ? <label className="text-danger">{this.state.errorMessageCreate}</label>: ''}
-                            <ButtonBootstrap btnStyle="primary" block={true} type="submit" text="Crear película" />
+                            <ButtonBootstrap btnStyle="info" block={true} type="submit" text="Crear película" />
                         </form>
                     </div>
                 </div>
