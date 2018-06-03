@@ -22,7 +22,7 @@ class MainAdmin extends Component {
     }
 
     showFilms = () => {
-        fetch(`http://localhost:8000/admin/film/showfilmsrooms`, {
+        fetch(`http://localhost:8000/admin/film/showfilms`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -125,17 +125,8 @@ class MainAdmin extends Component {
         return (
             <div className="container">
                 <div className="col-md-8 float-left">
-                    <div className="width-100 float-left margin-bottom-15">
-                        <div className="background-white padding-25">
-                            <h5>Filtro</h5>
-                            <div>
-                                
-                            </div>
-                        </div>
-                    </div>
                     <div className="width-100 float-left">
-                        <div className="background-white padding-25">
-                            <h5>Películas</h5>
+                        <div style={{paddingTop: '10px'}}>
                             <div>
                                 {this.state.listFilms.map((film) => {
                                     return <Film key={`film${film.id}`} image={`http://localhost:8000/uploads/films/${film.image}`} 
@@ -146,8 +137,7 @@ class MainAdmin extends Component {
                     </div>
                 </div>
                 <div className="col-md-4 float-left">
-                    <div className="background-white padding-25">
-                        <h5>Crear película</h5>
+                    <div className="background-white padding-25" style={{paddingTop: 0}}>
                         <form onSubmit={this.createFilm}>
                             <InputFilePreview src={this.state.srcImageCreate} onChange={this.selectImage} 
                                 divClass="horizontal-align-center padding-25" previewClass="max-height-100 margin-bottom-15" inputClass="btn btn-info margin-0" />

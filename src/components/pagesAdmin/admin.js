@@ -6,6 +6,8 @@ import Header from '../header';
 import Footer from '../footer';
 import LoginAdmin from './loginAdmin';
 import MainAdmin from './mainAdmin';
+import RoomAdmin from './roomAdmin';
+import SeatsAdmin from './SeatsAdmin';
 
 class Admin extends Component {
     checkHrefBrand = () => {
@@ -25,6 +27,8 @@ class Admin extends Component {
                     <div className="background-light-grey">
                         <Route exact path="/admin" component={LoginAdmin} />
                         <Route exact path="/admin/main" component={MainAdmin} />
+                        <Route exact path="/admin/rooms" component={RoomAdmin} />
+                        <Route exact path="/admin/room/:room" component={SeatsAdmin} />
                         {false === this.props.hasRedirect && '/admin' !== this.props.location.pathname ? <Redirect to="/admin" /> : null}
                         <Clearfix />
                     </div>

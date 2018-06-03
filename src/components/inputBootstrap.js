@@ -5,7 +5,7 @@ const InputBootstrap = props => {
     return (
         <FormGroup>
             <ControlLabel>{props.label}</ControlLabel>
-            <FormControl componentClass={props.componentClass} type={props.type} required={props.required} name={props.name} />
+            <FormControl componentClass={props.componentClass} type={props.type} step={props.step} max={props.max} required={props.required} name={props.name} />
         </FormGroup>
     );
 }
