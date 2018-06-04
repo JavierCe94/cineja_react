@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import InputFilePreview from '../inputFilePreview';
 import Film from './film';
 import upload from '../../upload.png';
+import Loader from '../loader';
 
 class MainAdmin extends Component {
     constructor(props) {
@@ -13,7 +14,8 @@ class MainAdmin extends Component {
             code: 0,
             errorMessageCreate: null,
             srcImageCreate: upload,
-            listFilms: []
+            listFilms: [],
+            isLoad: true
         }
     }
 
@@ -40,7 +42,8 @@ class MainAdmin extends Component {
         .then(jsonResponse => {
             if (200 === this.state.code) {
                 this.setState({
-                    listFilms: jsonResponse
+                    listFilms: jsonResponse,
+                    isLoad: false
                 });
             }
         });
@@ -77,7 +80,10 @@ class MainAdmin extends Component {
         const file  = {
             'type': form.image.files[0].type,
             'tmp_name': this.state.srcImageCreate
-         };  
+        };
+        this.setState({
+            isLoad: true
+        });
         fetch(`http://localhost:8000/admin/film/create`, {
             method: 'PUT',
             headers: {
@@ -121,19 +127,31 @@ class MainAdmin extends Component {
         });
     }
 
+    showElements = () => {
+        if (this.state.isLoad) {
+            return (
+                <Loader />
+            );
+        }
+
+        return (
+            <div style={{paddingTop: '10px'}}>
+                <div>
+                    {this.state.listFilms.map((film) => {
+                        return <Film key={`film${film.id}`} image={`http://localhost:8000/uploads/films/${film.image}`} 
+                            name={film.name} description={film.description} genres={film.filmGenres} />;
+                    })}
+                </div>
+            </div>
+        );
+    }
+
     render() {
         return (
             <div className="container">
                 <div className="col-md-8 float-left">
                     <div className="width-100 float-left">
-                        <div style={{paddingTop: '10px'}}>
-                            <div>
-                                {this.state.listFilms.map((film) => {
-                                    return <Film key={`film${film.id}`} image={`http://localhost:8000/uploads/films/${film.image}`} 
-                                        name={film.name} description={film.description} genres={film.filmGenres} />;
-                                })}
-                            </div>
-                        </div>
+                        {this.showElements()}
                     </div>
                 </div>
                 <div className="col-md-4 float-left">

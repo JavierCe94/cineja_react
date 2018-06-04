@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ButtonBootstrap from '../buttonBootstrap';
 import InputBootstrap from '../inputBootstrap';
 import Room from './room';
+import Loader from '../loader';
 
 class RoomAdmin extends Component {
     constructor(props) {
@@ -10,7 +11,8 @@ class RoomAdmin extends Component {
         this.state = {
             code: 0,
             errorMessageCreate: null,
-            listRooms: []
+            listRooms: [],
+            isLoad: true
         };
     }
 
@@ -37,7 +39,8 @@ class RoomAdmin extends Component {
         .then(jsonResponse => {
             if (200 === this.state.code) {
                 this.setState({
-                    listRooms: jsonResponse
+                    listRooms: jsonResponse,
+                    isLoad: false
                 });
             }
         });
@@ -56,6 +59,9 @@ class RoomAdmin extends Component {
     createRoom = e => {
         e.preventDefault();
         const form = e.target; 
+        this.setState({
+            isLoad: true
+        });
         fetch(`http://localhost:8000/admin/room/create`, {
             method: 'PUT',
             headers: {
@@ -92,18 +98,30 @@ class RoomAdmin extends Component {
             }
         });
     }
+
+    showElements = () => {
+        if (this.state.isLoad) {
+            return (
+                <Loader />
+            );
+        }
+
+        return (
+            <div style={{paddingTop: '10px'}}>
+                <div>
+                    {this.state.listRooms.map((room) => 
+                        <Room key={`room${room.id}`} id={room.id} name={room.name} numberSeats={room.seatsRow} state={room.state} />)}
+                </div>
+            </div>
+        );
+    }
     
     render() {
         return (
             <div className="container">
                 <div className="col-md-8 float-left">
                     <div className="width-100 float-left">
-                        <div style={{paddingTop: '10px'}}>
-                            <div>
-                                {this.state.listRooms.map((room) => 
-                                    <Room key={`room${room.id}`} id={room.id} name={room.name} numberSeats={room.seatsRow} state={room.state} />)}
-                            </div>
-                        </div>
+                        {this.showElements()}
                     </div>
                 </div>
                 <div className="col-md-4 float-left">

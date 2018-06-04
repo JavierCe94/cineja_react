@@ -5,6 +5,7 @@ import InputBootstrap from '../inputBootstrap';
 import ButtonBootstrap from '../buttonBootstrap';
 import Seat from './seat';
 import Legend from '../legend';
+import Loader from '../loader';
 
 class SeatsAdmin extends Component {
     constructor(props) {
@@ -13,12 +14,20 @@ class SeatsAdmin extends Component {
             code: 0,
             errorMessageCreate: null,
             listSeats: [],
+            seatsSelected: [],
             nameRoom: '',
             seatsRow: 0,
             roomStateClose: false,
             textBtnCloseOpen: 'Cerrar sala',
-            styleBtnCloseOpen: 'danger'
+            styleBtnCloseOpen: 'danger',
+            isLoad: true
         };
+    }
+
+    changeSeatsSelected = (seatsSelected) => {
+        this.setState({
+            seatsSelected: seatsSelected
+        });
     }
 
     componentWillMount = () => {
@@ -74,7 +83,8 @@ class SeatsAdmin extends Component {
         .then(jsonResponse => {
             if (200 === this.state.code) {
                 this.setState({
-                    listSeats: jsonResponse
+                    listSeats: jsonResponse,
+                    isLoad: false
                 });
             }
         });
@@ -82,7 +92,10 @@ class SeatsAdmin extends Component {
 
     createSeats = e => {
         e.preventDefault();
-        const form = e.target; 
+        const form = e.target;
+        this.setState({
+            isLoad: true
+        });
         fetch(`http://localhost:8000/admin/seat/room/${this.props.match.params.room}/create`, {
             method: 'PUT',
             headers: {
@@ -122,6 +135,9 @@ class SeatsAdmin extends Component {
 
     closeOpenRoom = (e) => {
         e.preventDefault();
+        this.setState({
+            isLoad: true
+        });
         fetch(`http://localhost:8000/admin/room/${this.props.match.params.room}/${false === this.state.roomStateClose ? 'stateclose' : 'stateopen'}`, {
             method: 'PUT',
             headers: {
@@ -144,8 +160,48 @@ class SeatsAdmin extends Component {
             if (200 === this.state.code) {
                 this.setState({
                     textBtnCloseOpen: this.state.roomStateClose ? 'Abrir sala' : 'Cerrar sala',
-                    styleBtnCloseOpen: this.state.roomStateClose ? 'success' : 'danger'
+                    styleBtnCloseOpen: this.state.roomStateClose ? 'success' : 'danger',
+                    isLoad: false
                 });
+            }
+        });
+    }
+
+    changeTypeSeat = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        this.setState({
+            isLoad: true
+        });
+        fetch(`http://localhost:8000/admin/seat/${'seat' === form.name ? 'typenormal' : 'typespace' }`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': this.props.token
+            },
+            body: JSON.stringify({
+                request: {
+                    seats: this.state.seatsSelected
+                }
+            })
+        })
+        .then(response => {
+            if (401 === response.status) {
+                localStorage.clear();
+            }
+            this.setState({
+                code: response.status
+            });
+
+            return response.json();
+        })
+        .then(jsonResponse => {
+            if (200 === this.state.code) {
+                this.setState({
+                    seatsSelected: []
+                });
+                this.showSeats();
             }
         });
     }
@@ -158,11 +214,48 @@ class SeatsAdmin extends Component {
             if (this.state.seatsRow === column) {
                 row++;
                 column = 0;
-                return <div><Clearfix key={`clearfix${seat.id}`} /> <Seat key={`seat${seat.id}`} price={seat.price} row={row} column={++column} /></div>;
+                return <div><Clearfix key={`clearfix${seat.id}`} />
+                    <Seat key={`seat${seat.id}`} id={seat.id} typeSpace={seat.typeSpace} seatsSelected={this.state.seatsSelected} 
+                        changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={++column} /></div>;
             }
 
-            return <Seat key={`seat${seat.id}`} price={seat.price} row={row} column={++column} />;
+            return <Seat key={`seat${seat.id}`} id={seat.id} typeSpace={seat.typeSpace} seatsSelected={this.state.seatsSelected} 
+                changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={++column} />;
         })
+    }
+
+    showElements = () => {
+        if (this.state.isLoad) {
+            return (
+                <Loader />
+            );
+        }
+        
+        return (
+            <div>
+                <div className="margin-bottom-15">
+                    <h5>{this.state.nameRoom}</h5>
+                    <form onSubmit={this.closeOpenRoom}>
+                        <ButtonBootstrap className="margin-top-15" type="submit" btnStyle={this.state.styleBtnCloseOpen} text={this.state.textBtnCloseOpen} />
+                    </form>
+                    <Legend className="margin-top-15" />
+                    <Clearfix />
+                </div>
+                {this.showSeatsTick()}
+                <Clearfix />
+                {
+                    0 !== this.state.seatsSelected.length ? 
+                        <div className="margin-top-15">
+                            <form className="float-left margin-right-10" name="space" onSubmit={this.changeTypeSeat}>
+                                <ButtonBootstrap btnStyle="primary" type="submit" text="Convertir a espacio" />
+                            </form>
+                            <form className="float-left" onSubmit={this.changeTypeSeat} name="seat">
+                                <ButtonBootstrap btnStyle="primary" type="submit" text="Convertir a asiento" />
+                            </form>
+                        </div> : ''
+                }
+            </div>
+        );
     }
 
     render() {
@@ -171,16 +264,7 @@ class SeatsAdmin extends Component {
                 <div className="col-md-8 float-left">
                     <div className="width-100 float-left">
                         <div className="horizontal-align-center" style={{paddingTop: '10px'}}>
-                            <div>
-                                <div className="margin-bottom-15">
-                                    <h5>{this.state.nameRoom}</h5>
-                                    <form onSubmit={this.closeOpenRoom}>
-                                        <ButtonBootstrap className="margin-top-15" type="submit" btnStyle={this.state.styleBtnCloseOpen} text={this.state.textBtnCloseOpen} />
-                                    </form>
-                                    <Legend className="margin-top-15" />
-                                </div>
-                                {this.showSeatsTick()}
-                            </div>
+                            {this.showElements()}
                         </div>
                     </div>
                 </div>
