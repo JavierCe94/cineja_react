@@ -18,7 +18,7 @@ class LoginAdmin extends Component {
         this.props.dispatch({
             type: 'LOGIN',
             token: token,
-            hasRedirect: true
+            role: 'ROLE_ADMIN'
         });
     }
 
@@ -71,7 +71,7 @@ class LoginAdmin extends Component {
                 <div className="col-md-4 center-block">
                     <form className="background-white padding-25" onSubmit={this.checkLoginAdmin}>
                         {this.showInputs()}
-                        {this.props.hasRedirect ? <Redirect to="/admin/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
+                        {'ROLE_ADMIN' === this.props.role ? <Redirect to="/admin/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
                         <ButtonBootstrap btnStyle="info" size="large" block={true} type="submit" text="Iniciar sesión" />
                     </form>
                 </div>
@@ -83,7 +83,7 @@ class LoginAdmin extends Component {
 const mapStateToProps = state => {
     return {
         token: state.token,
-        hasRedirect: state.hasRedirect
+        role: state.role
     }
 }
 

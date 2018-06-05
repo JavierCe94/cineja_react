@@ -28,7 +28,7 @@ class User extends Component {
                     <div className="background-light-grey">
                         <Route exact path="/user" component={LoginUser} />
                         <Route exact path="/user/signup" component={Signup} />
-                        {false === this.props.hasRedirect && '/user' !== this.props.location.pathname && '/user/signup' !== this.props.location.pathname ? <Redirect to="/user" /> : null}
+                        {'ROLE_USER' !== this.props.role && '/user' !== this.props.location.pathname && '/user/signup' !== this.props.location.pathname ? <Redirect to="/user" /> : null}
                         <Clearfix />
                     </div>
                 <Footer />
@@ -40,7 +40,7 @@ class User extends Component {
 const mapStateToProps = state => {
     return {
         token: state.token,
-        hasRedirect: state.hasRedirect
+        role: state.role
     }
 }
 

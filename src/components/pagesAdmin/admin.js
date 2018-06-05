@@ -8,6 +8,7 @@ import LoginAdmin from './loginAdmin';
 import MainAdmin from './mainAdmin';
 import RoomAdmin from './roomAdmin';
 import SeatsAdmin from './SeatsAdmin';
+import FilmGenreAdmin from './filmGenreAdmin';
 
 class Admin extends Component {
     checkHrefBrand = () => {
@@ -29,7 +30,8 @@ class Admin extends Component {
                         <Route exact path="/admin/main" component={MainAdmin} />
                         <Route exact path="/admin/rooms" component={RoomAdmin} />
                         <Route exact path="/admin/room/:room" component={SeatsAdmin} />
-                        {false === this.props.hasRedirect && '/admin' !== this.props.location.pathname ? <Redirect to="/admin" /> : null}
+                        <Route exact path="/admin/film/:film" component={FilmGenreAdmin} />
+                        {'ROLE_ADMIN' !== this.props.role && '/admin' !== this.props.location.pathname ? <Redirect to="/admin" /> : null}
                         <Clearfix />
                     </div>
                 <Footer />
@@ -41,7 +43,7 @@ class Admin extends Component {
 const mapStateToProps = state => {
     return {
         token: state.token,
-        hasRedirect: state.hasRedirect
+        role: state.role
     }
 }
 

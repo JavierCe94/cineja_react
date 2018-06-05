@@ -18,7 +18,7 @@ class LoginUser extends Component {
         this.props.dispatch({
             type: 'LOGIN',
             token: token,
-            hasRedirect: true
+            role: 'ROLE_USER'
         });
     }
 
@@ -71,7 +71,7 @@ class LoginUser extends Component {
                 <div className="col-md-4 center-block">
                     <form className="background-white padding-25" onSubmit={this.checkLoginUser}>
                         {this.showInputs()}
-                        {this.props.hasRedirect ? <Redirect to="/user/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
+                        {'ROLE_USER' === this.props.role ? <Redirect to="/user/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
                         <ButtonBootstrap btnStyle="info" size="large" block={true} type="submit" text="Iniciar sesión" />
                     </form>
                     <span className="text-muted">Si no tienes una cuenta, </span><Link to="/user/signup">Regístrate</Link>
@@ -84,7 +84,7 @@ class LoginUser extends Component {
 const mapStateToProps = state => {
     return {
         token: state.token,
-        hasRedirect: state.hasRedirect
+        role: state.role
     }
 }
 

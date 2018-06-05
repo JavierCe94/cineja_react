@@ -138,8 +138,8 @@ class MainAdmin extends Component {
             <div style={{paddingTop: '10px'}}>
                 <div>
                     {this.state.listFilms.map((film) => {
-                        return <Film key={`film${film.id}`} image={`http://localhost:8000/uploads/films/${film.image}`} 
-                            name={film.name} description={film.description} genres={film.filmGenres} />;
+                        return <Film key={`film${film.id}`} id={film.id} image={`http://localhost:8000/uploads/films/${film.image}`} 
+                            name={film.name} description={film.description} minAge={film.minAge} duration={film.duration} genres={film.filmGenres} />;
                     })}
                 </div>
             </div>

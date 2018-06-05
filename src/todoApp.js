@@ -2,8 +2,8 @@ const TodoApp = (state, action) => {
     switch (action.type) {
         case 'LOGIN': 
             state = {
-                hasRedirect: action.hasRedirect,
-                token: action.token
+                token: action.token,
+                role: action.role
             };
             return state;
         default:

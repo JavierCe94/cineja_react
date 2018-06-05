@@ -140,8 +140,7 @@ class RoomAdmin extends Component {
 
 const mapStateToProps = state => {
     return {
-        token: state.token,
-        hasRedirect: state.hasRedirect
+        token: state.token
     }
 }
 
