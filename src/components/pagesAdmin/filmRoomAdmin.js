@@ -1,28 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SelectBootstrap from '../selectBootstrap';
 import ButtonBootstrap from '../buttonBootstrap';
-import InputBootstrap from '../inputBootstrap';
-import FilmGenre from './filmGenre';
 import Loader from '../loader';
+import SelectBootstrap from '../selectBootstrap';
 
-class FilmGenreAdmin extends Component {
+class FilmRoomAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = {
             code: 0,
             errorMessageCreate: null,
-            errorMessageCreateSecond: null,
             nameFilm: null,
-            filmGenres: [],
-            listGenres: [],
+            listRooms: [],
+            filmRooms: [],
             isLoad: true
         };
     }
 
-    componentWillMount = () => {
+    componentWillMount() {
         this.showFilm();
-        this.showGenres();
+        this.showRooms();
     }
 
     showFilm = () => {
@@ -45,15 +42,15 @@ class FilmGenreAdmin extends Component {
             if (200 === this.state.code) {
                 this.setState({
                     nameFilm: jsonResponse.name,
-                    filmGenres: jsonResponse.genres,
+                    filmRooms: jsonResponse.rooms,
                     isLoad: false
                 });
             }
         });
     }
 
-    showGenres = () => {
-        fetch(`http://localhost:8000/admin/genre/showgenres`, {
+    showRooms = () => {
+        fetch(`http://localhost:8000/admin/room/showrooms`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -71,71 +68,20 @@ class FilmGenreAdmin extends Component {
         .then(jsonResponse => {
             if (200 === this.state.code) {
                 this.setState({
-                    listGenres: jsonResponse,
+                    listRooms: jsonResponse,
                     isLoad: false
                 });
             }
         });
     }
 
-    showInputs = () => {
-        const inputs = [
-            {key: 'etInpGenre', comClass: 'input', type: 'text', label: 'Nombre', required: true, name: 'name'},
-        ]
-
-        return inputs.map(input => <InputBootstrap key={input.key} componentClass={input.comClass} 
-            type={input.type} label={input.label} required={input.required} name={input.name} />);
-    }
-
-    createGenre = e => {
+    createFilmRoom = e => {
         e.preventDefault();
         const form = e.target; 
         this.setState({
             isLoad: true
         });
-        fetch(`http://localhost:8000/admin/genre/create`, {
-            method: 'PUT',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'X-AUTH-TOKEN': this.props.token
-            },
-            body: JSON.stringify({
-                request: {
-                    name: form.name.value,
-                }
-            })
-        })
-        .then(response => {
-            if (401 === response.status) {
-                localStorage.clear();
-            }
-            this.setState({code: response.status});
-
-            return response.json();
-        })
-        .then(jsonResponse => {
-            if (201 === this.state.code) {
-                form.reset();
-                this.setState({
-                    errorMessageCreate: null
-                });
-                this.showGenres();
-            } else {
-                this.setState({
-                    errorMessageCreate: jsonResponse
-                });
-            }
-        });
-    }
-
-    createFilmGenre = e => {
-        e.preventDefault();
-        const form = e.target; 
-        this.setState({
-            isLoad: true
-        });
-        fetch(`http://localhost:8000/admin/filmgenre/create`, {
+        fetch(`http://localhost:8000/admin/filmroom/create`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -145,7 +91,8 @@ class FilmGenreAdmin extends Component {
             body: JSON.stringify({
                 request: {
                     film: this.props.match.params.film,
-                    genre: form.genre.value,
+                    room: form.room.value,
+                    releasedate: `${form.day.value} ${form.hour.value}`
                 }
             })
         })
@@ -172,10 +119,6 @@ class FilmGenreAdmin extends Component {
         });
     }
 
-    showFilmGenres = () => {
-        return this.state.filmGenres.map((filmGenre) => <FilmGenre key={`filmGenre${filmGenre.name}`} text={filmGenre.name} />);
-    }
-
     showElements = () => {
         if (this.state.isLoad) {
             return (
@@ -186,13 +129,40 @@ class FilmGenreAdmin extends Component {
         return (
             <div>
                 <h5>{this.state.nameFilm}</h5>
-                <div>{this.showFilmGenres()}</div>
+                <div>
+                    <SelectBootstrap label={''} options={this.showSevenDays} />
+                </div>
             </div>
         );
     }
 
-    showOptionsSelect = () => {
-        return this.state.listGenres.map((genre) => <option key={`genre${genre.id}`} value={genre.id}>{genre.name}</option>);
+    showOptionsRooms = () => {
+        return this.state.listRooms.map((room) => <option key={`genre${room.id}`} value={room.id}>{room.name}</option>);
+    }
+
+    showSevenDays = () => {
+        const date = new Date();
+        const listDays = [];
+        for (let i = 0; i < 7; i++) {
+            listDays.push({value: date.toLocaleDateString().replace('/', '-').replace('/', '-'), text: date.toLocaleDateString()});
+            date.setDate(date.getDate() + 1);
+        }
+
+        return listDays.map((day) => <option key={`day${day.value}`} value={day.value}>{day.text}</option>);
+    }
+
+    showHours = () => {
+        const date = new Date();
+        date.setHours(16);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        let listHours = [];
+        for (let i = 0; i < 10; i++) {
+            listHours.push({value: date.toLocaleTimeString(), text: date.toLocaleTimeString()});
+            date.setMinutes(date.getMinutes() + 45);
+        }
+
+        return listHours.map((hour) => <option key={`day${hour.value}`} value={hour.value}>{hour.text}</option>);
     }
 
     render() {
@@ -205,17 +175,12 @@ class FilmGenreAdmin extends Component {
                 </div>
                 <div className="col-md-4 float-left">
                     <div className="background-white padding-25">
-                        <form onSubmit={this.createGenre}>
-                            {this.showInputs()}
+                        <form onSubmit={this.createFilmRoom}>
+                            <SelectBootstrap withDefault={true} textDefault="sala" label="Salas" options={this.showOptionsRooms} name="room" required={true} />
+                            <SelectBootstrap withDefault={true} textDefault="día" label="Días" options={this.showSevenDays} name="day" required={true} />
+                            <SelectBootstrap withDefault={true} textDefault="hora" label="Horas" options={this.showHours} name="hour" required={true} />
                             {null !== this.state.errorMessageCreate ? <label className="text-danger">{this.state.errorMessageCreate}</label>: ''}
-                            <ButtonBootstrap btnStyle="info" block={true} type="submit" text="Crear género" />
-                        </form>
-                    </div>
-                    <div className="background-white padding-25 margin-top-15">
-                        <form onSubmit={this.createFilmGenre}>
-                            <SelectBootstrap withDefault={true} textDefault="género" label="Géneros" options={this.showOptionsSelect} name="genre" required={true} />
-                            {null !== this.state.errorMessageCreateSecond ? <label className="text-danger">{this.state.errorMessageCreateSecond}</label>: ''}
-                            <ButtonBootstrap btnStyle="info" block={true} type="submit" text="Añadir a película" />
+                            <ButtonBootstrap btnStyle="info" block={true} type="submit" text="Añadir sala" />
                         </form>
                     </div>
                 </div>
@@ -230,4 +195,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(FilmGenreAdmin);
+export default connect(mapStateToProps)(FilmRoomAdmin);

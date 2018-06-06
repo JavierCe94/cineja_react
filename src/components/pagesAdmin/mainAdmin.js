@@ -6,6 +6,7 @@ import InputFilePreview from '../inputFilePreview';
 import Film from './film';
 import upload from '../../upload.png';
 import Loader from '../loader';
+import SelectBootstrap from '../selectBootstrap';
 
 class MainAdmin extends Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class MainAdmin extends Component {
             errorMessageCreate: null,
             srcImageCreate: upload,
             listFilms: [],
+            selectedValue: '',
             isLoad: true
         }
     }
@@ -23,13 +25,19 @@ class MainAdmin extends Component {
         this.showFilms();
     }
 
-    showFilms = () => {
+    showFilms = (date = null) => {
         fetch(`http://localhost:8000/admin/film/showfilms`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
+                'Content-Type': 'application/json',
                 'X-AUTH-TOKEN': this.props.token
-            }
+            },
+            body: JSON.stringify({
+                request: {
+                    date: date
+                }
+            })
         })
         .then(response => {
             if (401 === response.status) {
@@ -127,6 +135,25 @@ class MainAdmin extends Component {
         });
     }
 
+    showFilmsByDate = (e) => {
+        this.setState({
+            selectedValue: e.target.value,
+            isLoad: true
+        });
+        this.showFilms('' !== e.target.value ? e.target.value : null);
+    }
+
+    showSevenDays = () => {
+        const date = new Date();
+        let listDays = [];
+        for (let i = 0; i < 7; i++) {
+            listDays.push({value: date.toLocaleDateString().replace('/', '-').replace('/', '-'), text: date.toLocaleDateString()});
+            date.setDate(date.getDate() + 1);
+        }
+
+        return listDays.map((day) => <option key={`day${day.value}`} value={day.value}>{day.text}</option>);
+    }
+
     showElements = () => {
         if (this.state.isLoad) {
             return (
@@ -136,6 +163,9 @@ class MainAdmin extends Component {
 
         return (
             <div style={{paddingTop: '10px'}}>
+                <div>
+                    <SelectBootstrap withDefault={true} textDefault="día" label={''} onChange={this.showFilmsByDate} value={this.state.selectedValue} options={this.showSevenDays} />
+                </div>
                 <div>
                     {this.state.listFilms.map((film) => {
                         return <Film key={`film${film.id}`} id={film.id} image={`http://localhost:8000/uploads/films/${film.image}`} 

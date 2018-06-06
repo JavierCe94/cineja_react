@@ -51,8 +51,10 @@ class Film extends Component {
                         <span>Edad mínima {this.props.minAge}  años</span>
                     </div>
                     <Clearfix />
-                    <ButtonBootstrap btnStyle="primary" text="Salas" type="button" className="margin-right-10" />
-                    <Link to={`/admin/film/${this.props.id}`}>
+                    <Link to={`/admin/filmrooms/${this.props.id}`}>
+                        <ButtonBootstrap btnStyle="primary" text="Salas" type="button" className="margin-right-10" />
+                    </Link>
+                    <Link to={`/admin/filmgenres/${this.props.id}`}>
                         <ButtonBootstrap btnStyle="primary" text="Géneros" type="button" />
                     </Link>
                 </div>

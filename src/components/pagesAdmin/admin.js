@@ -9,6 +9,7 @@ import MainAdmin from './mainAdmin';
 import RoomAdmin from './roomAdmin';
 import SeatsAdmin from './SeatsAdmin';
 import FilmGenreAdmin from './filmGenreAdmin';
+import FilmRoomAdmin from './filmRoomAdmin';
 
 class Admin extends Component {
     checkHrefBrand = () => {
@@ -30,7 +31,8 @@ class Admin extends Component {
                         <Route exact path="/admin/main" component={MainAdmin} />
                         <Route exact path="/admin/rooms" component={RoomAdmin} />
                         <Route exact path="/admin/room/:room" component={SeatsAdmin} />
-                        <Route exact path="/admin/film/:film" component={FilmGenreAdmin} />
+                        <Route exact path="/admin/filmgenres/:film" component={FilmGenreAdmin} />
+                        <Route exact path="/admin/filmrooms/:film" component={FilmRoomAdmin} />
                         {'ROLE_ADMIN' !== this.props.role && '/admin' !== this.props.location.pathname ? <Redirect to="/admin" /> : null}
                         <Clearfix />
                     </div>
