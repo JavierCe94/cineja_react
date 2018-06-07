@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ButtonBootstrap from '../buttonBootstrap';
 import Loader from '../loader';
 import SelectBootstrap from '../selectBootstrap';
+import Room from './room';
 
 class FilmRoomAdmin extends Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class FilmRoomAdmin extends Component {
             nameFilm: null,
             listRooms: [],
             filmRooms: [],
+            selectedValue: new Date().toLocaleDateString().replace('/', '-').replace('/', '-'),
             isLoad: true
         };
     }
@@ -20,6 +22,7 @@ class FilmRoomAdmin extends Component {
     componentWillMount() {
         this.showFilm();
         this.showRooms();
+        this.showFilmRooms(this.state.selectedValue);
     }
 
     showFilm = () => {
@@ -41,9 +44,7 @@ class FilmRoomAdmin extends Component {
         .then(jsonResponse => {
             if (200 === this.state.code) {
                 this.setState({
-                    nameFilm: jsonResponse.name,
-                    filmRooms: jsonResponse.rooms,
-                    isLoad: false
+                    nameFilm: jsonResponse.name
                 });
             }
         });
@@ -68,7 +69,38 @@ class FilmRoomAdmin extends Component {
         .then(jsonResponse => {
             if (200 === this.state.code) {
                 this.setState({
-                    listRooms: jsonResponse,
+                    listRooms: jsonResponse
+                });
+            }
+        });
+    }
+
+    showFilmRooms = (date) => {
+        fetch(`http://localhost:8000/admin/filmroom/film/${this.props.match.params.film}/showrooms`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': this.props.token
+            },
+            body: JSON.stringify({
+                request: {
+                    date: date
+                }
+            })
+        })
+        .then(response => {
+            if (401 === response.status) {
+                localStorage.clear();
+            }
+            this.setState({code: response.status});
+
+            return response.json();
+        })
+        .then(jsonResponse => {
+            if (200 === this.state.code) {
+                this.setState({
+                    filmRooms: jsonResponse,
                     isLoad: false
                 });
             }
@@ -110,13 +142,21 @@ class FilmRoomAdmin extends Component {
                 this.setState({
                     errorMessageCreateSecond: null
                 });
-                this.showFilm();
+                this.showFilmRooms(this.state.selectedValue);
             } else {
                 this.setState({
                     errorMessageCreateSecond: jsonResponse
                 });
             }
         });
+    }
+
+    showFilmRoomsByDate = (e) => {
+        this.setState({
+            selectedValue: e.target.value,
+            isLoad: true
+        });
+        this.showFilmRooms(e.target.value);
     }
 
     showElements = () => {
@@ -130,7 +170,11 @@ class FilmRoomAdmin extends Component {
             <div>
                 <h5>{this.state.nameFilm}</h5>
                 <div>
-                    <SelectBootstrap label={''} options={this.showSevenDays} />
+                    <SelectBootstrap label={''} onChange={this.showFilmRoomsByDate} value={this.state.selectedValue} options={this.showSevenDays} />
+                </div>
+                <div>
+                    {this.state.filmRooms.map((room) => <Room key={`room${room.room.id}`} id={room.room.id} name={`${room.room.name} ${room.releaseDate}`}
+                        numberSeats={room.room.seatsRow} state={room.room.state} />)}
                 </div>
             </div>
         );

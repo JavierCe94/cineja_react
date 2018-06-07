@@ -14,11 +14,12 @@ class LoginAdmin extends Component {
         this.onLoginIn = this.onLoginIn.bind(this);
     }
 
-    onLoginIn = (token) => {
+    onLoginIn = (response) => {
         this.props.dispatch({
             type: 'LOGIN',
-            token: token,
-            role: 'ROLE_ADMIN'
+            token: response.token,
+            role: 'ROLE_ADMIN',
+            userName: response.userName
         });
     }
 

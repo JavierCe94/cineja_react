@@ -3,7 +3,8 @@ const TodoApp = (state, action) => {
         case 'LOGIN': 
             state = {
                 token: action.token,
-                role: action.role
+                role: action.role,
+                userName: action.userName
             };
             return state;
         default:

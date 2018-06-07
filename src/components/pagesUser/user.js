@@ -6,6 +6,8 @@ import LoginUser from './loginUser';
 import Signup from './signup';
 import Header from '../header';
 import Footer from '../footer';
+import MainUser from './mainUser';
+import SeatsUser from './seatsUser';
 
 class User extends Component {
     checkHrefBrand = () => {
@@ -23,11 +25,13 @@ class User extends Component {
     render() {
         return (
             <main>
-                <Header hrefBrand={this.checkHrefBrand()} isMainUser={this.props.location.pathname.startsWith('/user/') &&
+                <Header userName={this.props.userName} hrefBrand={this.checkHrefBrand()} isMainUser={this.props.location.pathname.startsWith('/user/') &&
                     false === this.props.location.pathname.startsWith('/user/signup')} />
                     <div className="background-light-grey">
                         <Route exact path="/user" component={LoginUser} />
                         <Route exact path="/user/signup" component={Signup} />
+                        <Route exact path="/user/main" component={MainUser} />
+                        <Route exact path="/user/room/:room/filmroom/:filmroom" component={SeatsUser} />
                         {'ROLE_USER' !== this.props.role && '/user' !== this.props.location.pathname && '/user/signup' !== this.props.location.pathname ? <Redirect to="/user" /> : null}
                         <Clearfix />
                     </div>
@@ -40,7 +44,8 @@ class User extends Component {
 const mapStateToProps = state => {
     return {
         token: state.token,
-        role: state.role
+        role: state.role,
+        userName: state.userName
     }
 }
 

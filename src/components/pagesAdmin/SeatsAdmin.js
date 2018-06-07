@@ -214,8 +214,8 @@ class SeatsAdmin extends Component {
             if (this.state.seatsRow === column) {
                 row++;
                 column = 0;
-                return <div><Clearfix key={`clearfix${seat.id}`} />
-                    <Seat key={`seat${seat.id}`} id={seat.id} typeSpace={seat.typeSpace} seatsSelected={this.state.seatsSelected} 
+                return <div key={`div${seat.id}`}><Clearfix />
+                    <Seat id={seat.id} typeSpace={seat.typeSpace} seatsSelected={this.state.seatsSelected} 
                         changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={++column} /></div>;
             }
 
@@ -238,7 +238,7 @@ class SeatsAdmin extends Component {
                     <form onSubmit={this.closeOpenRoom}>
                         <ButtonBootstrap className="margin-top-15" type="submit" btnStyle={this.state.styleBtnCloseOpen} text={this.state.textBtnCloseOpen} />
                     </form>
-                    <Legend className="margin-top-15" />
+                    <Legend typeLegend="admin" className="margin-top-15" />
                     <Clearfix />
                 </div>
                 {this.showSeatsTick()}
@@ -285,8 +285,7 @@ class SeatsAdmin extends Component {
 
 const mapStateToProps = state => {
     return {
-        token: state.token,
-        hasRedirect: state.hasRedirect
+        token: state.token
     }
 }
 

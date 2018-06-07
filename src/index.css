@@ -127,13 +127,19 @@ body {
   font-weight: bold;
 }
 
+.bold-font-size-1-15 {
+  color: #222;
+  font-size: 1.15em;
+  font-weight: bold;
+}
+
 .hover-hand:hover {
   cursor: pointer;
   background-color: #fff;
   border-radius: 2pt;
 }
 
-.seat-select, .seat-select-sel, .seat-select-space {
+.seat-select, .seat-select-sel, .seat-select-space, .seat-select-space-user, .seat-select-not-available {
   background-color: #63747e;
   border: none;
   min-width: 23px;
@@ -143,12 +149,20 @@ body {
   color: #fff;
 }
 
+.seat-select-space-user {
+  background-color: transparent;
+}
+
 .seat-select-sel {
   background-color: #f0ad4e;
 }
 
 .seat-select-space {
   background-color: #e4e4e4;
+}
+
+.seat-select-not-available {
+  background-color: #d9534f;
 }
 
 .seat-select:hover {
@@ -172,6 +186,10 @@ body {
 
 .tooltip-inner {
   font-size: 1.15em;
+}
+
+.color-white {
+  color: #aaa;
 }
 
 /* Loader */

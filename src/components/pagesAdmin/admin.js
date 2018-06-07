@@ -7,7 +7,7 @@ import Footer from '../footer';
 import LoginAdmin from './loginAdmin';
 import MainAdmin from './mainAdmin';
 import RoomAdmin from './roomAdmin';
-import SeatsAdmin from './SeatsAdmin';
+import SeatsAdmin from './seatsAdmin';
 import FilmGenreAdmin from './filmGenreAdmin';
 import FilmRoomAdmin from './filmRoomAdmin';
 
@@ -25,7 +25,7 @@ class Admin extends Component {
     render() {
         return (
             <main>
-                <Header hrefBrand={this.checkHrefBrand()} isMainAdmin={this.props.location.pathname.startsWith('/admin/')} />
+                <Header userName={this.props.userName} hrefBrand={this.checkHrefBrand()} isMainAdmin={this.props.location.pathname.startsWith('/admin/')} />
                     <div className="background-light-grey">
                         <Route exact path="/admin" component={LoginAdmin} />
                         <Route exact path="/admin/main" component={MainAdmin} />
@@ -45,7 +45,8 @@ class Admin extends Component {
 const mapStateToProps = state => {
     return {
         token: state.token,
-        role: state.role
+        role: state.role,
+        userName: state.userName
     }
 }
 

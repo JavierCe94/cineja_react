@@ -126,7 +126,7 @@ class MainAdmin extends Component {
                     srcImageCreate: upload,
                     errorMessageCreate: null
                 });
-                this.showFilms();
+                this.showFilms(this.state.selectedValue);
             } else {
                 this.setState({
                     errorMessageCreate: jsonResponse
@@ -202,8 +202,7 @@ class MainAdmin extends Component {
 
 const mapStateToProps = state => {
     return {
-        token: state.token,
-        hasRedirect: state.hasRedirect
+        token: state.token
     }
 }
 

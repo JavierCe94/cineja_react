@@ -14,11 +14,12 @@ class LoginUser extends Component {
         this.onLoginIn = this.onLoginIn.bind(this);
     }
 
-    onLoginIn = (token) => {
+    onLoginIn = (response) => {
         this.props.dispatch({
             type: 'LOGIN',
-            token: token,
-            role: 'ROLE_USER'
+            token: response.token,
+            role: 'ROLE_USER',
+            userName: response.userName
         });
     }
 

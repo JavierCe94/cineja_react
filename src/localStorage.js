@@ -1,7 +1,8 @@
 export const loadState = () => {
     const stateDefault = {
         hasRedirect: false,
-        token: ''
+        token: '',
+        userName: ''
     };
 
     try {

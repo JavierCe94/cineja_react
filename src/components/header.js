@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import NavItem from './navItem';
+import user from '../user.png';
 
 class Header extends Component {
     clearLocalStorage = (e) => {
@@ -26,11 +27,25 @@ class Header extends Component {
         return navs.map(nav => <NavItem key={nav.key} onClick={nav.onClick} href={nav.href} text={nav.text} />);
     }
 
+    showNameUser = () => {
+        if ('' === this.props.userName) {
+            return;
+        }
+
+        return (
+            <div>
+                <img src={user} className="margin-right-5" style={{width: '20px'}} />
+                <span className="font-size-0-85 color-white">{this.props.userName}</span>
+            </div>
+        );
+    }
+
     render() {
         return (
             <nav className="navbar navbar-expand-md bg-dark navbar-dark">
                 <div className="container">
                     <Link className="navbar-brand" to={this.props.hrefBrand}>Cineja</Link>
+                    {this.showNameUser()}
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                         <span className="navbar-toggler-icon"></span>
                     </button>
