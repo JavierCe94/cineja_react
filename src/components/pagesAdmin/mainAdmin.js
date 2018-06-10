@@ -16,7 +16,7 @@ class MainAdmin extends Component {
             errorMessageCreate: null,
             srcImageCreate: upload,
             listFilms: [],
-            selectedValue: '',
+            selectedValue: null,
             isLoad: true
         }
     }

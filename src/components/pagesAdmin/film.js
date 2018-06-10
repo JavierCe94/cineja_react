@@ -48,7 +48,7 @@ class Film extends Component {
                     <div className="margin-bottom-15 font-size-0-85">
                         <span>Duración: {this.props.duration} min</span>
                         <Clearfix />
-                        <span>Edad mínima {this.props.minAge}  años</span>
+                        <span>Edad mínima: {this.props.minAge}  años</span>
                     </div>
                     <Clearfix />
                     <Link to={`/admin/filmrooms/${this.props.id}`}>

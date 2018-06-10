@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 
 class Seat extends Component {
     constructor(props) {
@@ -7,18 +6,6 @@ class Seat extends Component {
         this.state = {
             seatState: this.props.typeSpace ? 'seat-select-space' : 'seat-select'
         };
-    }
-
-    componentDidMount = () => {
-        $('[data-toggle="tooltip"]').tooltip();
-    }
-
-    tooltip = () => {
-        return (
-            `Fila: ${this.props.row}<br/>
-            Butaca: ${this.props.column}<br/><br/>
-            Precio: ${this.props.price}€`
-        );
     }
 
     clickSeat = (e) => {
@@ -42,8 +29,7 @@ class Seat extends Component {
     render() {
         return (
             <div className="margin-2 float-left">
-                <div className={this.state.seatState} onClick={this.clickSeat} data-toggle="tooltip" data-html={true} 
-                    data-placement="top" title={this.tooltip()}>&#x2713;</div>
+                <div className={this.state.seatState} onClick={this.clickSeat}>&#x2713;</div>
             </div>
         );
     }

@@ -85,17 +85,17 @@ class Film extends Component {
                     <Image className="width-100" src={this.props.image} onLoad={this.loadImage} responsive />
                 </div>
                 <div className="col-md-9 float-left">
-                    <span className="bold-font-size-1">{this.props.name}</span>
+                    <span className="bold-font-size-1-15">{this.props.name}</span>
                     <Clearfix />
                     <span className="font-size-1">{this.props.description}</span>
                     <Clearfix />
                     <div>
                         {this.showGenres()}
                     </div>
-                    <div className="margin-bottom-15 font-size-0-85">
+                    <div className="margin-bottom-15 font-size-1">
                         <span>Duración: {this.props.duration} min</span>
                         <Clearfix />
-                        <span>Edad mínima {this.props.minAge}  años</span>
+                        <span>Edad mínima: {this.props.minAge}  años</span>
                         <Clearfix />
                         {this.showFilmRoomsButtons()}
                     </div>
