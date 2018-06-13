@@ -94,9 +94,9 @@ class MainUser extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="col-md-12 float-left">
-                    <div className="col-md-12">
+            <div className="container padding-0-max-width-767">
+                <div className="col-md-12 padding-0-max-width-767 float-left">
+                    <div className="col-md-12 padding-0-max-width-767">
                         {this.showElements()}
                     </div>
                 </div>

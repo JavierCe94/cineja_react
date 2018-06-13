@@ -35,7 +35,7 @@ class Film extends Component {
             <div className="col-md-12 padding-top-15">
                 <div className="col-md-4 float-left">
                     {this.showElement()}
-                    <Image className="width-100" src={this.props.image} onLoad={this.loadImage} responsive />
+                    <Image className="width-100-film height-200-max-width-767" src={this.props.image} onLoad={this.loadImage} responsive />
                 </div>
                 <div className="col-md-8 float-left">
                     <span className="bold-font-size-1 ">{this.props.name}</span>
@@ -45,14 +45,14 @@ class Film extends Component {
                     <div>
                         {this.showGenres()}
                     </div>
-                    <div className="margin-bottom-15 font-size-0-85">
+                    <div className="margin-bottom-5 font-size-0-85">
                         <span>Duración: {this.props.duration} min</span>
                         <Clearfix />
                         <span>Edad mínima: {this.props.minAge}  años</span>
                     </div>
                     <Clearfix />
                     <Link to={`/admin/filmrooms/${this.props.id}`}>
-                        <ButtonBootstrap btnStyle="primary" text="Salas" type="button" className="margin-right-10" />
+                        <ButtonBootstrap btnStyle="primary" text="Salas" type="button" className="margin-right-5" />
                     </Link>
                     <Link to={`/admin/filmgenres/${this.props.id}`}>
                         <ButtonBootstrap btnStyle="primary" text="Géneros" type="button" />

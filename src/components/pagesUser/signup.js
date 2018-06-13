@@ -69,8 +69,8 @@ class Signup extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="col-md-4 center-block">
+            <div className="container padding-0-max-width-767">
+                <div className="col-md-5 padding-0-max-width-767 center-block">
                     <form className="background-white padding-25" onSubmit={this.createUser}>
                         {this.showInputs()}
                         <label className={this.state.infoIsTypeError ? 'text-danger' : 'text-success'}>{this.state.infoMessage}</label>

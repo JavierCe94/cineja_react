@@ -209,6 +209,7 @@ class SeatsAdmin extends Component {
     showSeatsTick = () => {
         let row = 1;
         let column = 0;
+        const maxWidth = (1/this.state.seatsRow)*100;
 
         return this.state.listSeats.map((seat) => {
             if (this.state.seatsRow === column) {
@@ -216,11 +217,11 @@ class SeatsAdmin extends Component {
                 column = 0;
                 return <div key={`div${seat.id}`}><Clearfix />
                     <Seat id={seat.id} typeSpace={seat.typeSpace} seatsSelected={this.state.seatsSelected} 
-                        changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={++column} /></div>;
+                        changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={++column} maxWidth={maxWidth} /></div>;
             }
 
             return <Seat key={`seat${seat.id}`} id={seat.id} typeSpace={seat.typeSpace} seatsSelected={this.state.seatsSelected} 
-                changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={++column} />;
+                changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={++column} maxWidth={maxWidth} />;
         })
     }
 
@@ -232,7 +233,7 @@ class SeatsAdmin extends Component {
         }
         
         return (
-            <div>
+            <div className="width-seats-admin">
                 <div className="margin-bottom-15">
                     <h5>{this.state.nameRoom}</h5>
                     <form onSubmit={this.closeOpenRoom}>
@@ -246,7 +247,7 @@ class SeatsAdmin extends Component {
                 {
                     0 !== this.state.seatsSelected.length ? 
                         <div className="margin-top-15">
-                            <form className="float-left margin-right-10" name="space" onSubmit={this.changeTypeSeat}>
+                            <form className="float-left margin-right-5 margin-bottom-5" name="space" onSubmit={this.changeTypeSeat}>
                                 <ButtonBootstrap btnStyle="primary" type="submit" text="Convertir a espacio" />
                             </form>
                             <form className="float-left" onSubmit={this.changeTypeSeat} name="seat">
@@ -260,15 +261,15 @@ class SeatsAdmin extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="col-md-8 float-left">
+            <div className="container padding-0-max-width-767">
+                <div className="col-md-8 padding-0-max-width-767 float-left">
                     <div className="width-100 float-left">
                         <div className="horizontal-align-center" style={{paddingTop: '10px'}}>
                             {this.showElements()}
                         </div>
                     </div>
                 </div>
-                <div className="col-md-4 float-left">
+                <div className="col-md-4 padding-0-max-width-767 margin-top-15-width-767 float-left">
                     <div className="background-white padding-25">
                         <form onSubmit={this.createSeats}>
                             <InputBootstrap type="number" label="Cantidad de butacas" max="250" name="totalSeats" />

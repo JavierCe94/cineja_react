@@ -68,8 +68,8 @@ class LoginAdmin extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="col-md-4 center-block">
+            <div className="container padding-0-max-width-767">
+                <div className="col-md-5 padding-0-max-width-767 center-block">
                     <form className="background-white padding-25" onSubmit={this.checkLoginAdmin}>
                         {this.showInputs()}
                         {'ROLE_ADMIN' === this.props.role ? <Redirect to="/admin/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}

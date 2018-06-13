@@ -178,13 +178,13 @@ class MainAdmin extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="col-md-8 float-left">
+            <div className="container padding-0-max-width-767">
+                <div className="col-md-8 padding-0-max-width-767 float-left">
                     <div className="width-100 float-left">
                         {this.showElements()}
                     </div>
                 </div>
-                <div className="col-md-4 float-left">
+                <div className="col-md-4 padding-0-max-width-767 margin-top-15-width-767 float-left">
                     <div className="background-white padding-25" style={{paddingTop: 0}}>
                         <form onSubmit={this.createFilm}>
                             <InputFilePreview src={this.state.srcImageCreate} onChange={this.selectImage} 

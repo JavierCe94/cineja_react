@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Image } from 'react-bootstrap';
 import NavItem from './navItem';
 import user from '../user.png';
 
@@ -34,7 +35,7 @@ class Header extends Component {
 
         return (
             <div>
-                <img src={user} className="margin-right-5" style={{width: '20px'}} />
+                <Image src={user} className="margin-right-5" style={{width: '20px'}} />
                 <span className="font-size-0-85 color-white">{this.props.userName}</span>
             </div>
         );

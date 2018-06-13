@@ -30,6 +30,18 @@ body {
   width: 100%;
 }
 
+.width-100-film {
+  width: 100%;
+}
+
+.width-seats {
+  width: 600px;
+}
+
+.width-seats-admin {
+  width: 600px;
+}
+
 .max-height-100 {
   max-height: 100px;
 }
@@ -38,6 +50,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .border-2 {
@@ -62,8 +75,8 @@ body {
   padding: 25px;
 }
 
-.margin-2 {
-  margin: 2px;
+.margin-1 {
+  margin: 1px;
 }
 
 .padding-bottom-25 {
@@ -89,6 +102,10 @@ body {
 
 .margin-top-15 {
   margin-top: 15px;
+}
+
+.margin-bottom-5 {
+  margin-bottom: 5px;
 }
 
 .margin-bottom-15 {
@@ -245,5 +262,62 @@ body {
   }  20% { 
     transform: scaleY(1.0);
     -webkit-transform: scaleY(1.0);
+  }
+}
+
+@media (max-width: 1199px) {
+  .width-seats-admin {
+    width: 450px;
+  }
+}
+
+@media (max-width: 991px) {
+  .width-seats-admin {
+    width: 400px;
+  }
+}
+
+@media (max-width: 767px) {
+  .width-seats {
+    width: 500px;
+  }
+
+  .width-seats-admin {
+    width: 100%;
+  }
+
+  .padding-0-max-width-767 {
+    padding: 0 0 !important;
+  }
+
+  .margin-top-15-width-767 {
+    margin-top: 15px;
+  }
+
+  .width-100-film {
+    width: auto;
+  }
+
+  .height-200-max-width-767 {
+    max-height: 200px !important;
+  }
+}
+
+@media (max-width: 580px) {
+  .width-seats {
+    width: 100%;
+  }
+
+  .width-seats-admin {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .seat-select, .seat-select-sel, .seat-select-space, .seat-select-space-user, .seat-select-not-available {
+    font-size: 0.75em;
+    text-align: center;
+    min-height: 20px;
+    border-radius: 1.5pt;
   }
 }

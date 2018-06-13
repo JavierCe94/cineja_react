@@ -211,13 +211,13 @@ class FilmRoomAdmin extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="col-md-8 float-left">
+            <div className="container padding-0-max-width-767">
+                <div className="col-md-8 padding-0-max-width-767 float-left">
                     <div className="width-100 float-left">
                         {this.showElements()}
                     </div>
                 </div>
-                <div className="col-md-4 float-left">
+                <div className="col-md-4 padding-0-max-width-767 margin-top-15-width-767 float-left">
                     <div className="background-white padding-25">
                         <form onSubmit={this.createFilmRoom}>
                             <SelectBootstrap withDefault={true} textDefault="sala" label="Salas" options={this.showOptionsRooms} name="room" required={true} />

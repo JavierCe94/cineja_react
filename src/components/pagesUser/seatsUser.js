@@ -85,6 +85,7 @@ class SeatsUser extends Component {
         let row = 1;
         let column = 0;
         let totalColumns = 0;
+        const maxWidth = (1/this.state.seatsRow)*100;
 
         return this.state.listSeats.map((seat) => {
             if (false === seat.typeSpace) {
@@ -92,16 +93,19 @@ class SeatsUser extends Component {
             }
             if (this.state.seatsRow === totalColumns) {
                 row++;
-                column = 1;
+                column = 0;
+                if (false === seat.typeSpace) {
+                    column += 1;
+                }
                 totalColumns = 1;
                 return <div key={`div${seat.id}`}><Clearfix />
                     <Seat id={seat.id} typeSpace={seat.typeSpace} seatsSelected={this.state.seatsSelected} 
-                        changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={column} /></div>;
+                        changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={column} maxWidth={maxWidth} /></div>;
             }
 
             totalColumns++;
             return <Seat key={`seat${seat.id}`} id={seat.id} typeSpace={seat.typeSpace} seatsSelected={this.state.seatsSelected} 
-                changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={column} />;
+                changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={column} maxWidth={maxWidth} />;
         })
     }
 
@@ -113,7 +117,7 @@ class SeatsUser extends Component {
         }
         
         return (
-            <div>
+            <div className="width-seats">
                 <div className="margin-bottom-15">
                     <h5>{this.state.nameRoom}</h5>
                     <Legend className="margin-top-15" />
@@ -126,9 +130,9 @@ class SeatsUser extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="col-md-12 float-left">
-                    <div className="col-md-12 float-left">
+            <div className="container padding-0-max-width-767">
+                <div className="col-md-12 padding-0-max-width-767 float-left">
+                    <div className="col-md-12 padding-0-max-width-767 float-left">
                         <div className="horizontal-align-center" style={{paddingTop: '10px'}}>
                             {this.showElements()}
                         </div>
