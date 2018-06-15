@@ -107,24 +107,23 @@ class RoomAdmin extends Component {
         }
 
         return (
-            <div style={{paddingTop: '10px'}}>
-                <div>
-                    {this.state.listRooms.map((room) => 
-                        <Room key={`room${room.id}`} id={room.id} name={room.name} numberSeats={room.seatsRow} state={room.state} />)}
-                </div>
+            <div>
+                {this.state.listRooms.map((room) => 
+                    <Room key={`room${room.id}`} id={room.id} name={room.name} numberSeats={room.seatsRow} state={room.state} />)}
             </div>
         );
     }
     
     render() {
         return (
-            <div className="container padding-0-max-width-767">
-                <div className="col-md-8 padding-0-max-width-767 float-left">
+            <div className="container padding-0-max-width-767 block-order">
+                <div className="col-md-8 padding-0-max-width-767 float-left order-third">
                     <div className="width-100 float-left">
                         {this.showElements()}
                     </div>
                 </div>
-                <div className="col-md-4 padding-0-max-width-767 margin-top-15-width-767 float-left">
+                <div className="line-divide order-second"></div>
+                <div className="col-md-4 padding-0-max-width-767 order-first float-left">
                     <div className="background-white padding-25">
                         <form onSubmit={this.createRoom}>
                             {this.showInputs()}

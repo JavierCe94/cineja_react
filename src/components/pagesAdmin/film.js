@@ -32,7 +32,7 @@ class Film extends Component {
 
     render() {
         return (
-            <div className="col-md-12 padding-top-15">
+            <div className="col-md-12 padding-0-max-width-767 margin-top-15">
                 <div className="col-md-4 float-left">
                     {this.showElement()}
                     <Image className="width-100-film height-200-max-width-767" src={this.props.image} onLoad={this.loadImage} responsive />

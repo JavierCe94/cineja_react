@@ -4,12 +4,14 @@ import { Clearfix } from 'react-bootstrap';
 import Seat from './seat';
 import Legend from '../legend';
 import Loader from '../loader';
+import ButtonBootstrap from '../buttonBootstrap';
 
 class SeatsUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
             code: 0,
+            errorMessageCreate: null,
             listSeats: [],
             seatsSelected: [],
             nameRoom: '',
@@ -56,7 +58,7 @@ class SeatsUser extends Component {
     }
 
     showSeats = () => {
-        fetch(`http://localhost:8000/user/seat/room/${this.props.match.params.room}/filmroom/${this.props.match.params.filmroom}/showseatsfilm`, {
+        fetch(`http://localhost:8000/user/seat/room/${this.props.match.params.room}/filmroom/${this.props.match.params.filmroom}/showseats`, {
             method: 'PUT',
             headers: {
                 Accept: 'application/json',
@@ -67,7 +69,9 @@ class SeatsUser extends Component {
             if (401 === response.status) {
                 localStorage.clear();
             }
-            this.setState({code: response.status});
+            this.setState({
+                code: response.status
+            });
 
             return response.json();
         })
@@ -76,6 +80,50 @@ class SeatsUser extends Component {
                 this.setState({
                     listSeats: jsonResponse,
                     isLoad: false
+                });
+            }
+        });
+    }
+
+    paySeats = (e) => {
+        e.preventDefault();
+        this.setState({
+            isLoad: true
+        });
+        fetch(`http://localhost:8000/user/userseatfilm/create`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': this.props.token
+            },
+            body: JSON.stringify({
+                request: {
+                    seats: this.state.seatsSelected,
+                    filmroom: this.props.match.params.filmroom
+                }
+            })
+        })
+        .then(response => {
+            if (401 === response.status) {
+                localStorage.clear();
+            }
+            this.setState({
+                code: response.status
+            });
+
+            return response.json();
+        })
+        .then(jsonResponse => {
+            if (201 === this.state.code) {
+                this.setState({
+                    seatsSelected: [],
+                    errorMessageCreate: null
+                });
+                this.showSeats();
+            } else {
+                this.setState({
+                    errorMessageCreate: jsonResponse
                 });
             }
         });
@@ -99,13 +147,14 @@ class SeatsUser extends Component {
                 }
                 totalColumns = 1;
                 return <div key={`div${seat.id}`}><Clearfix />
-                    <Seat id={seat.id} typeSpace={seat.typeSpace} seatsSelected={this.state.seatsSelected} 
+                    <Seat id={seat.id} typeSpace={seat.typeSpace} seatsSelected={this.state.seatsSelected} typeNotAvailable={1 === seat.usersSeatFilm.length} 
                         changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={column} maxWidth={maxWidth} /></div>;
             }
 
             totalColumns++;
             return <Seat key={`seat${seat.id}`} id={seat.id} typeSpace={seat.typeSpace} seatsSelected={this.state.seatsSelected} 
-                changeSeatsSelected={this.changeSeatsSelected} price={seat.price} row={row} column={column} maxWidth={maxWidth} />;
+                typeNotAvailable={1 === seat.usersSeatFilm.length} changeSeatsSelected={this.changeSeatsSelected} price={seat.price} 
+                row={row} column={column} maxWidth={maxWidth} />;
         })
     }
 
@@ -120,10 +169,20 @@ class SeatsUser extends Component {
             <div className="width-seats">
                 <div className="margin-bottom-15">
                     <h5>{this.state.nameRoom}</h5>
+                    <span className="bold-font-size-1">Puedes elegir hasta un máximo de 10 butacas</span>
                     <Legend className="margin-top-15" />
                     <Clearfix />
                 </div>
                 {this.showSeatsTick()}
+                <Clearfix />
+                {
+                    0 !== this.state.seatsSelected.length ? 
+                        <form className="float-left margin-top-15" onSubmit={this.paySeats} name="pay">
+                            <span className="text-danger">{this.state.errorMessageCreate}</span>
+                            <Clearfix />
+                            <ButtonBootstrap btnStyle="primary" type="submit" text="Pagar" />
+                        </form> : ''
+                }
             </div>
         );
     }
@@ -133,7 +192,7 @@ class SeatsUser extends Component {
             <div className="container padding-0-max-width-767">
                 <div className="col-md-12 padding-0-max-width-767 float-left">
                     <div className="col-md-12 padding-0-max-width-767 float-left">
-                        <div className="horizontal-align-center" style={{paddingTop: '10px'}}>
+                        <div className="horizontal-align-center">
                             {this.showElements()}
                         </div>
                     </div>

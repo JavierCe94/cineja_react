@@ -71,7 +71,7 @@ class Signup extends Component {
         return (
             <div className="container padding-0-max-width-767">
                 <div className="col-md-5 padding-0-max-width-767 center-block">
-                    <form className="background-white padding-25" onSubmit={this.createUser}>
+                    <form className="background-white padding-25 margin-bottom-15" onSubmit={this.createUser}>
                         {this.showInputs()}
                         <label className={this.state.infoIsTypeError ? 'text-danger' : 'text-success'}>{this.state.infoMessage}</label>
                         <ButtonBootstrap btnStyle="info" size="large" block={true} type="submit" text="Registrar" />

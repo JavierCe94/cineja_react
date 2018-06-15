@@ -14,12 +14,12 @@ class Seat extends Component {
             this.props.seatsSelected.push(this.props.id);
             this.props.changeSeatsSelected(this.props.seatsSelected);
             this.setState({seatState: 'seat-select-sel'});
-        }
-        else {
+        } else {
             this.props.seatsSelected.map((seat, pos) => {
                 if (this.props.id === seat) {
                     this.props.seatsSelected.splice(pos, 1);
                 }
+                
                 return null;
             });
             this.props.changeSeatsSelected(this.props.seatsSelected);

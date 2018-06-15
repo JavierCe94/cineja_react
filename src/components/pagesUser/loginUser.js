@@ -70,7 +70,7 @@ class LoginUser extends Component {
         return (
             <div className="container padding-0-max-width-767">
                 <div className="col-md-5 padding-0-max-width-767 center-block">
-                    <form className="background-white padding-25" onSubmit={this.checkLoginUser}>
+                    <form className="background-white padding-25 margin-bottom-15" onSubmit={this.checkLoginUser}>
                         {this.showInputs()}
                         {'ROLE_USER' === this.props.role ? <Redirect to="/user/main" /> : <label className="text-danger">{this.state.errorMessage}</label>}
                         <ButtonBootstrap btnStyle="info" size="large" block={true} type="submit" text="Iniciar sesión" />

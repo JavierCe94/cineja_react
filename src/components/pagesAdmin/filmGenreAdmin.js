@@ -184,10 +184,7 @@ class FilmGenreAdmin extends Component {
         }
 
         return (
-            <div>
-                <h5>{this.state.nameFilm}</h5>
-                <div>{this.showFilmGenres()}</div>
-            </div>
+            <div>{this.showFilmGenres()}</div>
         );
     }
 
@@ -197,13 +194,15 @@ class FilmGenreAdmin extends Component {
 
     render() {
         return (
-            <div className="container padding-0-max-width-767">
-                <div className="col-md-8 padding-0-max-width-767 float-left">
+            <div className="container padding-0-max-width-767 block-order">
+                <div className="col-md-8 padding-0-max-width-767 float-left order-third">
                     <div className="width-100 float-left">
+                        <h5>{this.state.nameFilm}</h5>
                         {this.showElements()}
                     </div>
                 </div>
-                <div className="col-md-4 padding-0-max-width-767 margin-top-15-width-767 float-left">
+                <div className="line-divide order-second"></div>
+                <div className="col-md-4 padding-0-max-width-767 order-first float-left">
                     <div className="background-white padding-25">
                         <form onSubmit={this.createGenre}>
                             {this.showInputs()}
@@ -211,7 +210,8 @@ class FilmGenreAdmin extends Component {
                             <ButtonBootstrap btnStyle="info" block={true} type="submit" text="Crear género" />
                         </form>
                     </div>
-                    <div className="background-white padding-25 margin-top-15">
+                    <div className="line-divide"></div>
+                    <div className="background-white padding-25">
                         <form onSubmit={this.createFilmGenre}>
                             <SelectBootstrap withDefault={true} textDefault="género" label="Géneros" options={this.showOptionsSelect} name="genre" required={true} />
                             {null !== this.state.errorMessageCreateSecond ? <label className="text-danger">{this.state.errorMessageCreateSecond}</label>: ''}

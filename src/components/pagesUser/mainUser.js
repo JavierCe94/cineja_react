@@ -78,14 +78,14 @@ class MainUser extends Component {
         }
 
         return (
-            <div style={{paddingTop: '10px'}}>
+            <div>
                 <div>
                     <SelectBootstrap withDefault={false} label={''} onChange={this.showFilmsByDate} value={this.state.selectedValue} options={this.showSevenDays} />
                 </div>
                 <div>
                     {this.state.listFilms.map((film) => {
                         return <Film key={`film${film.id}`} id={film.id} image={`http://localhost:8000/uploads/films/${film.image}`} name={film.name} token={this.props.token}
-                            description={film.description} minAge={film.minAge} duration={film.duration} genres={film.filmGenres} date={this.state.selectedValue} />;
+                            description={film.description} minAge={film.minAge} duration={film.duration} filmRooms={film.filmRooms} genres={film.filmGenres} date={this.state.selectedValue} />;
                     })}
                 </div>
             </div>

@@ -2,7 +2,7 @@ import React from 'react';
 
 const FilmGenre = (props) => {
     return (
-        <div className="margin-top-15">
+        <div className="margin-bottom-5">
             <span className="bold-font-size-1">{props.text}</span>
         </div>
     );
